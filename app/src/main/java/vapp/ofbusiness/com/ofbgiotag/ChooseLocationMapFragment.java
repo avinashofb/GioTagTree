@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 
-public class ChooseLocationMapFragment extends MapFragment {
+public class ChooseLocationMapFragment extends SupportMapFragment {
 
     private View mOriginalView;
     private MapWrapperLayout mMapWrapperLayout;

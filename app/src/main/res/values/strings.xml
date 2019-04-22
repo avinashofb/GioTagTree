@@ -4,4 +4,10 @@
     <string name="google_maps_key">AIzaSyC5cezni_LeKBxz_Yl4n5MNX97Sv2hbtBo</string>
     <string name="title_activity_choose_location">Map</string>
     <string name="title_activity_choose_locatio_new">Map</string>
+
+    <string name="storage_permission_title">All permission\'s are required</string>
+    <string name="storage_permission_desc">We require this permission to be able to access the GPS and filestorage.</string>
+    <string name="lets_do">Let\'s do this!</string>
+    <string name="later">Later</string>
+
 </resources>
