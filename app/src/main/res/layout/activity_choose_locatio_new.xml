@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        android:id="@+id/map"
+        android:name="vapp.ofbusiness.com.ofbgiotag.ChooseLocationMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/marker_view_incl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/marker_view" />
+
+    <include
+        android:id="@+id/location_display_incl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="7dp"
+        layout="@layout/location_display_view" />
+
+
+    <Button
+        android:id="@+id/update_location_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="UPDATE LOCATION"
+        android:textColor="#ffffff"
+        android:background="@color/acceptBtColor"
+        android:layout_margin="10dp"
+        android:gravity="center"/>
+
+
+</RelativeLayout>
