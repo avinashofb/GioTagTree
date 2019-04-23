@@ -36,6 +36,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,6 +49,8 @@ import static vapp.ofbusiness.com.ofbgiotag.MapConstant.CHOOSE_LOCATION_ACTIVITY
 public class GeoTaggingActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final int CAMERA_REQUEST_CODE = 123;
+    public static final String ARG_SELECTED_LAT = "correctLat";
+    public static final String ARG_SELECTED_LONG = "correctLong";
 
     private ImageView imageHolder;
     private View acceptOrRejectContainer;
@@ -84,8 +89,15 @@ public class GeoTaggingActivity extends AppCompatActivity implements OnMapReadyC
         capturedImageButton.setVisibility(View.VISIBLE);
         geoAddress.setVisibility(View.GONE);
         acceptOrRejectContainer.setVisibility(View.GONE);
-//        mapWarningView.setVisibility(View.VISIBLE);
-//        mapWarningView.setText("This is your current Location. If you're not satisfied please find manually by clicking here.");
+
+
+        if(getIntent().getExtras() != null){
+            if(getIntent().hasExtra(ARG_SELECTED_LONG)){
+                selectedLong = getIntent().getDoubleExtra(ARG_SELECTED_LONG, 0);
+                selectedLat = getIntent().getDoubleExtra(ARG_SELECTED_LAT, 0);
+            }
+        }
+
 
         if(!MapUtils.areThereMockPermissionApps(this)){
                 AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
@@ -180,33 +192,14 @@ public class GeoTaggingActivity extends AppCompatActivity implements OnMapReadyC
                     }
                 }
                 break;
-//            case CHOOSE_LOCATION_ACTIVITY_RESULT_CODE:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    if(data.getExtras().containsKey(ChooseLocationActivity.ARG_SELECTED_LAT)) {
-//                        selectedLat = data.getDoubleExtra(ChooseLocationActivity.ARG_SELECTED_LAT, 0);
-//                        selectedLong = data.getDoubleExtra(ChooseLocationActivity.ARG_SELECTED_LONG, 0);
-//                        mGoogleMap.clear();
-//                        MapUtils.addMarker(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), "Last Location", mapMarker, mGoogleMap, BitmapDescriptorFactory.fromResource(R.drawable.ic_location_off_red_700_36dp));
-//                        MapUtils.addMarker(selectedLat, selectedLong, "Updated Location", mapMarker, mGoogleMap, BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-//                        MapUtils.moveCameraToLocation(selectedLat, selectedLong,mGoogleMap);
-//                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                                mGoogleMap.setMyLocationEnabled(false);
-//                            }
-//                        }
-//                    }
-//                }
-//                break;
-
-
         }
     }
 
     private void imageIsNotGeoTagged(){
         isGeotaggedLocation = false;
         Toast.makeText(this, "Is Gio-Tagged Location - " + isGeotaggedLocation, Toast.LENGTH_LONG).show();
-        geoTaggedLong = lastKnownLocation.getLongitude();
-        geoTaggedLat = lastKnownLocation.getLatitude();
+        geoTaggedLong = selectedLong;
+        geoTaggedLat = selectedLat;
         geoAddress.setText(MapUtils.getCompleteAddress(geoTaggedLat, geoTaggedLong, this));
         MapUtils.addMarker(geoTaggedLat, geoTaggedLong, "Clicked Image Location", mapMarker, mGoogleMap, BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -262,8 +255,8 @@ public class GeoTaggingActivity extends AppCompatActivity implements OnMapReadyC
         mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-
-        //checkPermissionForExternalStorage(this);
+        MapUtils.addMarker(selectedLat, selectedLong, "Current Location", mapMarker, mGoogleMap, BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        MapUtils.moveCameraToLocation(selectedLat, selectedLong, mGoogleMap);
 
     }
 
@@ -280,141 +273,4 @@ public class GeoTaggingActivity extends AppCompatActivity implements OnMapReadyC
             }
         }
     };
-
-//    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
-
-//    private boolean checkPermissionForExternalStorage(final Context context) {
-//        int currentAPIVersion = Build.VERSION.SDK_INT;
-//        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
-//            if (ContextCompat.checkSelfPermission(context,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
-//                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
-//                    showDialog("External storage", context,
-//                            Manifest.permission.READ_EXTERNAL_STORAGE);
-//
-//                } else {
-//                    ActivityCompat
-//                            .requestPermissions(
-//                                    (Activity) context,
-//                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-//                                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-//                }
-//                return false;
-//            } else {
-//                checkForLocationPermission();
-//                return true;
-//            }
-//
-//        } else {
-//            return true;
-//        }
-//    }
-
-//    private void checkForLocationPermission(){
-//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                    == PackageManager.PERMISSION_GRANTED) {
-//                //Location Permission already granted
-//                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-//                mGoogleMap.setMyLocationEnabled(true);
-//            } else {
-//                //Request Location Permission
-//                checkLocationPermission();
-//            }
-//        } else {
-//            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-//            mGoogleMap.setMyLocationEnabled(true);
-//        }
-//    }
-
-//    public void showDialog(final String msg, final Context context, final String permission) {
-//        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
-//        alertBuilder.setCancelable(true);
-//        alertBuilder.setTitle("Permission necessary");
-//        alertBuilder.setMessage(msg + " permission is necessary");
-//        alertBuilder.setPositiveButton(android.R.string.yes,
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        ActivityCompat.requestPermissions((Activity) context,
-//                                new String[]{permission},
-//                                MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-//                    }
-//                });
-//        AlertDialog alert = alertBuilder.create();
-//        alert.show();
-//    }
-
-//    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-//
-//    private void checkLocationPermission() {
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            // Should we show an explanation?
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-//
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//                new AlertDialog.Builder(this)
-//                        .setTitle("Location Permission Needed")
-//                        .setMessage("This app needs the Location permission, please accept to use location functionality")
-//                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                //Prompt the user once explanation has been shown
-//                                ActivityCompat.requestPermissions(GeoTaggingActivity.this,
-//                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                                        MY_PERMISSIONS_REQUEST_LOCATION);
-//                            }
-//                        })
-//                        .create()
-//                        .show();
-//
-//
-//            } else {
-//                // No explanation needed, we can request the permission.
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                        MY_PERMISSIONS_REQUEST_LOCATION);
-//            }
-//        }
-//    }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_LOCATION: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    // permission was granted, yay! Do the
-//                    // location-related task you need to do.
-//                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-//                        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-//                        mGoogleMap.setMyLocationEnabled(true);
-//                    }
-//
-//                } else {
-//
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission.
-//                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
-//                }
-//                return;
-//            }
-//
-//            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    // do your stuff
-//                    checkForLocationPermission();
-//                } else {
-//                    Toast.makeText(GeoTaggingActivity.this, "GET_ACCOUNTS Denied", Toast.LENGTH_SHORT).show();
-//                    checkForLocationPermission();
-//                }
-//                break;
-//        }
-//    }
 }
