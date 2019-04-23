@@ -1,4 +1,4 @@
-package vapp.ofbusiness.com.ofbgiotag;
+package vapp.ofbusiness.com.ofbgiotag.listener;
 
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;

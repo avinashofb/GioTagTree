@@ -11,7 +11,6 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +25,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -34,6 +32,12 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 
 import java.util.List;
+
+import vapp.ofbusiness.com.ofbgiotag.listener.LocationPickerListener;
+import vapp.ofbusiness.com.ofbgiotag.listener.MapPermissionListener;
+import vapp.ofbusiness.com.ofbgiotag.module.GeoTagHelperModule;
+import vapp.ofbusiness.com.ofbgiotag.module.GeoTagPermissionModule;
+import vapp.ofbusiness.com.ofbgiotag.utils.MapUtils;
 
 public class ChooseLocationActivity extends AppCompatActivity implements MapWrapperLayout.OnDragListener, OnMapReadyCallback {
 
@@ -188,7 +192,7 @@ public class ChooseLocationActivity extends AppCompatActivity implements MapWrap
         }
     }
 
-    GeoTagHelperModule geoTagHelperModule = new GeoTagHelperModule(new MarkerInSelectedRegionListener() {
+    GeoTagHelperModule geoTagHelperModule = new GeoTagHelperModule(new LocationPickerListener() {
         @Override
         public void markerInSelectedRegion(LatLng latLng) {
             correctedLat = latLng.latitude;

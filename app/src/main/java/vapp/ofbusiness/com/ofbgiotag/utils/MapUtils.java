@@ -1,4 +1,4 @@
-package vapp.ofbusiness.com.ofbgiotag;
+package vapp.ofbusiness.com.ofbgiotag.utils;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -23,7 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+
+import vapp.ofbusiness.com.ofbgiotag.R;
 
 public class MapUtils {
 

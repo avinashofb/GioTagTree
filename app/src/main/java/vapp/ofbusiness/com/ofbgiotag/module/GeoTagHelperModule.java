@@ -1,4 +1,4 @@
-package vapp.ofbusiness.com.ofbgiotag;
+package vapp.ofbusiness.com.ofbgiotag.module;
 
 import android.app.Activity;
 import android.graphics.Point;
@@ -19,9 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import vapp.ofbusiness.com.ofbgiotag.listener.LocationPickerListener;
+import vapp.ofbusiness.com.ofbgiotag.utils.MapUtils;
+
 public class GeoTagHelperModule {
 
-    private MarkerInSelectedRegionListener markerInSelectedRegionListener;
+    private LocationPickerListener locationPickerListener;
     public GoogleMap googleMap;
     private Activity activity;
     public Location lastKnownLocation;
@@ -38,9 +41,9 @@ public class GeoTagHelperModule {
 
     }
 
-    public GeoTagHelperModule(MarkerInSelectedRegionListener markerInSelectedRegionListener, GoogleMap googleMap,
+    public GeoTagHelperModule(LocationPickerListener locationPickerListener, GoogleMap googleMap,
                               Activity activity, double circleRadius, Location lastKnownLocation) {
-        this.markerInSelectedRegionListener = markerInSelectedRegionListener;
+        this.locationPickerListener = locationPickerListener;
         this.googleMap = googleMap;
         this.activity = activity;
         this.circleRadius = circleRadius;
@@ -56,10 +59,10 @@ public class GeoTagHelperModule {
             Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
 
             if (MapUtils.getDisplacementBetweenCoordinates(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), centerLatLng.latitude, centerLatLng.longitude) > circleRadius) {
-                markerInSelectedRegionListener.markerNotInSelectedRegion();
+                locationPickerListener.markerNotInSelectedRegion();
                 return;
             } else {
-                markerInSelectedRegionListener.markerInSelectedRegion(centerLatLng);
+                locationPickerListener.markerInSelectedRegion(centerLatLng);
             }
 
             List<Address> addresses = new ArrayList<Address>();
@@ -89,7 +92,7 @@ public class GeoTagHelperModule {
                     completeAddress += "," + addressIndex3;
                 }
                 if (completeAddress != null) {
-                    markerInSelectedRegionListener.getAddressByCoordinates();
+                    locationPickerListener.getAddressByCoordinates();
                 }
             }
         }

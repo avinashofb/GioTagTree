@@ -1,8 +1,8 @@
-package vapp.ofbusiness.com.ofbgiotag;
+package vapp.ofbusiness.com.ofbgiotag.listener;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public interface MarkerInSelectedRegionListener {
+public interface LocationPickerListener {
 
     void markerInSelectedRegion(LatLng latLng);
 

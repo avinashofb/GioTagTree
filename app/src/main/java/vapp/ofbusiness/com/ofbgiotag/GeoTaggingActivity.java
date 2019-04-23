@@ -1,10 +1,8 @@
 package vapp.ofbusiness.com.ofbgiotag;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -13,9 +11,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,15 +32,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.List;
 
-import static vapp.ofbusiness.com.ofbgiotag.MapConstant.CHOOSE_LOCATION_ACTIVITY_RESULT_CODE;
+import vapp.ofbusiness.com.ofbgiotag.utils.MapUtils;
 
 public class GeoTaggingActivity extends AppCompatActivity implements OnMapReadyCallback {
 

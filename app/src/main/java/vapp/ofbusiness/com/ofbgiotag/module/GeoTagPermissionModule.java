@@ -1,4 +1,4 @@
-package vapp.ofbusiness.com.ofbgiotag;
+package vapp.ofbusiness.com.ofbgiotag.module;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,6 +10,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.util.List;
+
+import vapp.ofbusiness.com.ofbgiotag.listener.MapPermissionListener;
 
 public class GeoTagPermissionModule {
 

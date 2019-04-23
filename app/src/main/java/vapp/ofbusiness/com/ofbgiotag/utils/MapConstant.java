@@ -1,4 +1,4 @@
-package vapp.ofbusiness.com.ofbgiotag;
+package vapp.ofbusiness.com.ofbgiotag.utils;
 
 public class MapConstant {
 
